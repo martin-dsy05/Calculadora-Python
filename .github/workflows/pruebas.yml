@@ -1,10 +1,19 @@
 
-name: CI - Calculadora Python
+name: CI-CD Calculadora
 
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   pruebas:
@@ -22,5 +31,37 @@ jobs:
       - name: Instalar dependencias
         run: python -m pip install -r requirements.txt
 
-      - name: Ejecutar pruebas con pytest
+      - name: Ejecutar pruebas
         run: python -m pytest tests/ -v
+
+      - name: Verificar HTML
+        run: test -f index.html
+
+  despliegue:
+    needs: pruebas
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar pagina
+        run: |
+          mkdir -p public
+          cp index.html public/index.html
+
+      - name: Subir archivos de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

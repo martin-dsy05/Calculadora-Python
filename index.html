@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Python</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .contenedor {
+            background: white;
+            max-width: 420px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #0002;
+        }
+
+        h1 {
+            color: #243b53;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #resultado {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <h1>Calculadora</h1>
+        <p>Operaciones matemáticas básicas</p>
+
+        <input type="number" id="numero1"
+               placeholder="Primer número" step="any">
+
+        <select id="operacion">
+            <option value="+">Sumar</option>
+            <option value="-">Restar</option>
+            <option value="*">Multiplicar</option>
+            <option value="/">Dividir</option>
+        </select>
+
+        <input type="number" id="numero2"
+               placeholder="Segundo número" step="any">
+
+        <button onclick="calcular()">Calcular</button>
+
+        <p id="resultado">Resultado: --</p>
+    </div>
+
+    <script>
+        function calcular() {
+            const campo1 = document.getElementById("numero1");
+            const campo2 = document.getElementById("numero2");
+            const resultado = document.getElementById("resultado");
+
+            if (campo1.value === "" || campo2.value === "") {
+                resultado.textContent = "Ingresa ambos números";
+                return;
+            }
+
+            const a = Number(campo1.value);
+            const b = Number(campo2.value);
+            const op = document.getElementById("operacion").value;
+
+            let valor;
+
+            if (op === "+") valor = a + b;
+            else if (op === "-") valor = a - b;
+            else if (op === "*") valor = a * b;
+            else {
+                if (b === 0) {
+                    resultado.textContent = "No se puede dividir entre cero";
+                    return;
+                }
+                valor = a / b;
+            }
+
+            resultado.textContent = "Resultado: " + valor;
+        }
+    </script>
+</body>
+</html>

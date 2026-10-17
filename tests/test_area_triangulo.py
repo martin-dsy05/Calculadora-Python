@@ -4,7 +4,7 @@ from area_triangulo import area_triangulo
 
 
 def test_area_correcta():
-    assert area_triangulo(10, 5) == 50
+    assert area_triangulo(10, 5) == 25
 
 
 def test_area_limite():
